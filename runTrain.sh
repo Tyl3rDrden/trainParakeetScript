@@ -1,3 +1,4 @@
+#!/bin/bash
 NUMBA_CUDA_USE_NVIDIA_BINDING=1 HYDRA_FULL_ERROR=1 python ./speech_to_text_finetune.py \
   --config-path="." \
   --config-name="speech_to_text_finetune" \
