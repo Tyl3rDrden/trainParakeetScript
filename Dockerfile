@@ -17,4 +17,4 @@ COPY . .
 # 5. Setup execution
 RUN chmod +x /workspace/runTrain.sh
 
-ENTRYPOINT ["./runTrain.sh"]
+CMD ["/bin/bash", "-c", "sleep infinity"]
