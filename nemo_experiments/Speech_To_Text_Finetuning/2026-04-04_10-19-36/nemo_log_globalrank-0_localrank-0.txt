@@ -1,0 +1,103 @@
+[NeMo W 2026-04-04 10:19:35 <frozen importlib:241] Megatron num_microbatches_calculator not found, using Apex version.
+[NeMo I 2026-04-04 10:19:36 utils:186] Hydra config: name: Speech_To_Text_Finetuning
+    init_from_pretrained_model: nvidia/parakeet-tdt-0.6b-v3
+    model:
+      sample_rate: 16000
+      activation_checkpointing: true
+      train_ds:
+        shar_path: hf://buckets/Tyl3rDrden/IvritKnessetRecordingsData
+        use_lhotse: true
+        is_tarred: true
+        batch_size: 1
+        allow_missing_data: true
+        shuffle: false
+        num_workers: 8
+        pin_memory: true
+      validation_ds:
+        manifest_filepath: null
+        sample_rate: ${model.sample_rate}
+        batch_size: 16
+        shuffle: false
+        use_start_end_token: false
+        num_workers: 8
+        pin_memory: true
+      test_ds:
+        manifest_filepath: null
+        sample_rate: ${model.sample_rate}
+        batch_size: 16
+        shuffle: false
+        use_start_end_token: false
+        num_workers: 8
+        pin_memory: true
+      char_labels:
+        update_labels: false
+        labels: null
+      tokenizer:
+        update_tokenizer: true
+        dir: ./tokenizer_spe_bpe_v32768_pad_bos_eos
+        type: bpe
+      spec_augment:
+        _target_: nemo.collections.asr.modules.SpectrogramAugmentation
+        freq_masks: 2
+        time_masks: 10
+        freq_width: 27
+        time_width: 0.05
+      optim:
+        name: adamw
+        lr: 0.0001
+        betas:
+        - 0.9
+        - 0.98
+        weight_decay: 0.001
+        sched:
+          name: CosineAnnealing
+          warmup_steps: 5000
+          warmup_ratio: null
+          min_lr: 5.0e-06
+    trainer:
+      devices: 1
+      num_nodes: 1
+      max_epochs: -1
+      max_steps: 1000000
+      val_check_interval: 2000
+      accelerator: gpu
+      strategy:
+        _target_: lightning.pytorch.strategies.DDPStrategy
+        gradient_as_bucket_view: true
+      accumulate_grad_batches: 16
+      gradient_clip_val: 0.0
+      precision: 16-mixed
+      log_every_n_steps: 10
+      enable_progress_bar: true
+      num_sanity_val_steps: 0
+      check_val_every_n_epoch: null
+      sync_batchnorm: true
+      enable_checkpointing: false
+      logger: false
+      benchmark: false
+      limit_train_batches: null
+    exp_manager:
+      exp_dir: null
+      name: ${name}
+      create_tensorboard_logger: true
+      create_checkpoint_callback: true
+      checkpoint_callback_params:
+        monitor: val_wer
+        mode: min
+        save_top_k: 5
+        always_save_nemo: true
+      resume_if_exists: false
+      resume_ignore_no_checkpoint: false
+      create_wandb_logger: true
+      wandb_logger_kwargs:
+        name: parakeet_v3_finetune_fixed
+        project: parakeet-hebrew-asr
+    
+[NeMo I 2026-04-04 10:19:36 speech_to_text_finetune:201] ExpManager schema
+[NeMo I 2026-04-04 10:19:36 speech_to_text_finetune:201] {'explicit_log_dir': None, 'exp_dir': None, 'name': None, 'version': None, 'use_datetime_version': True, 'resume_if_exists': False, 'resume_past_end': False, 'resume_ignore_no_checkpoint': False, 'resume_from_checkpoint': None, 'create_tensorboard_logger': True, 'summary_writer_kwargs': None, 'create_wandb_logger': False, 'wandb_logger_kwargs': None, 'create_mlflow_logger': False, 'mlflow_logger_kwargs': {'experiment_name': None, 'run_name': None, 'tracking_uri': None, 'tags': None, 'save_dir': './mlruns', 'prefix': '', 'artifact_location': None, 'run_id': None, 'log_model': False}, 'create_dllogger_logger': False, 'dllogger_logger_kwargs': {'verbose': False, 'stdout': False, 'json_file': './dllogger.json'}, 'create_clearml_logger': False, 'clearml_logger_kwargs': {'project': None, 'task': None, 'connect_pytorch': False, 'model_name': None, 'tags': None, 'log_model': False, 'log_cfg': False, 'log_metrics': False}, 'create_neptune_logger': False, 'neptune_logger_kwargs': None, 'create_checkpoint_callback': True, 'checkpoint_callback_params': {'filepath': None, 'dirpath': None, 'filename': None, 'monitor': 'val_loss', 'verbose': True, 'save_last': True, 'save_top_k': 3, 'save_weights_only': False, 'mode': 'min', 'auto_insert_metric_name': True, 'every_n_epochs': 1, 'every_n_train_steps': None, 'train_time_interval': None, 'prefix': None, 'postfix': '.nemo', 'save_best_model': False, 'always_save_nemo': False, 'save_nemo_on_train_end': True, 'model_parallel_size': None, 'save_on_train_epoch_end': False, 'async_save': False, 'save_last_n_optim_states': -1}, 'create_early_stopping_callback': False, 'create_ipl_epoch_stopper_callback': False, 'early_stopping_callback_params': {'monitor': 'val_loss', 'mode': 'min', 'min_delta': 0.001, 'patience': 10, 'verbose': True, 'strict': True, 'check_finite': True, 'stopping_threshold': None, 'divergence_threshold': None, 'check_on_train_epoch_end': None, 'log_rank_zero_only': False}, 'ipl_epoch_stopper_callback_params': {'enable_stop': True, 'stop_every_n_epochs': 1}, 'create_preemption_callback': True, 'files_to_copy': None, 'log_step_timing': True, 'log_delta_step_timing': False, 'step_timing_kwargs': {'reduction': 'mean', 'sync_cuda': False, 'buffer_size': 1}, 'log_local_rank_0_only': False, 'log_global_rank_0_only': False, 'disable_validation_on_resume': True, 'ema': {'enable': False, 'decay': 0.999, 'cpu_offload': False, 'validate_original_weights': False, 'every_n_steps': 1}, 'max_time_per_run': None, 'seconds_to_sleep': 5.0, 'create_straggler_detection_callback': False, 'straggler_detection_params': {'report_time_interval': 300.0, 'calc_relative_gpu_perf': True, 'calc_individual_gpu_perf': True, 'num_gpu_perf_scores_to_log': 5, 'gpu_relative_perf_threshold': 0.7, 'gpu_individual_perf_threshold': 0.7, 'stop_if_detected': False}, 'create_fault_tolerance_callback': False, 'fault_tolerance': {'workload_check_interval': 5.0, 'initial_rank_heartbeat_timeout': 3600.0, 'rank_heartbeat_timeout': 2700.0, 'calculate_timeouts': True, 'safety_factor': 5.0, 'rank_termination_signal': <Signals.SIGKILL: 9>, 'log_level': 'INFO', 'max_rank_restarts': 0, 'max_subsequent_job_failures': 0, 'additional_ft_launcher_args': '', 'simulated_fault': None}, 'log_tflops_per_sec_per_gpu': True}
+[NeMo I 2026-04-04 10:19:36 speech_to_text_finetune:201] Experiments will be logged at /home/bsoft/callAi/trainParakeet/nemo_experiments/Speech_To_Text_Finetuning/2026-04-04_10-19-36
+[NeMo I 2026-04-04 10:19:36 exp_manager:689] TensorboardLogger has been set up
+[NeMo I 2026-04-04 10:19:36 exp_manager:689] WandBLogger has been set up
+[NeMo W 2026-04-04 10:19:36 exp_manager:736] The checkpoint callback was told to monitor a validation value and trainer's max_steps was set to 1000000. Please ensure that max_steps will run for at least None epochs to ensure that checkpointing will not error out.
+[NeMo I 2026-04-04 10:19:36 speech_to_text_finetune:201] TFLOPs per sec per GPU will be calculated, conditioned on supported models. Defaults to -1 upon failure.
+[NeMo I 2026-04-04 10:19:36 speech_to_text_finetune:208] Sleeping for at least 60 seconds to wait for model download to finish.

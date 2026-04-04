@@ -1,0 +1,77 @@
+commit hash: 62d20ed2796daa2940bf78d6b066ce5ce2a1b672
+diff --git a/nemo_experiments/wandb/debug-internal.log b/nemo_experiments/wandb/debug-internal.log
+index c6a8d1b..599cce1 120000
+--- a/nemo_experiments/wandb/debug-internal.log
++++ b/nemo_experiments/wandb/debug-internal.log
+@@ -1 +1 @@
+-run-20260329_155925-2026-03-29_15-58-06/logs/debug-internal.log
+\ No newline at end of file
++run-20260404_105404-2026-04-04_10-52-42/logs/debug-internal.log
+\ No newline at end of file
+diff --git a/nemo_experiments/wandb/debug.log b/nemo_experiments/wandb/debug.log
+index 9aa407f..899a8ac 120000
+--- a/nemo_experiments/wandb/debug.log
++++ b/nemo_experiments/wandb/debug.log
+@@ -1 +1 @@
+-run-20260329_155925-2026-03-29_15-58-06/logs/debug.log
+\ No newline at end of file
++run-20260404_105404-2026-04-04_10-52-42/logs/debug.log
+\ No newline at end of file
+diff --git a/nemo_experiments/wandb/latest-run b/nemo_experiments/wandb/latest-run
+index 14bc5e4..ca569f2 120000
+--- a/nemo_experiments/wandb/latest-run
++++ b/nemo_experiments/wandb/latest-run
+@@ -1 +1 @@
+-run-20260329_155925-2026-03-29_15-58-06
+\ No newline at end of file
++run-20260404_105404-2026-04-04_10-52-42
+\ No newline at end of file
+diff --git a/runTrain.sh b/runTrain.sh
+index 690cc74..30135b3 100755
+--- a/runTrain.sh
++++ b/runTrain.sh
+@@ -1,11 +1,12 @@
+ #!/bin/bash
++export LHOTSE_PREFETCH_SIZE=32
++export FSSPEC_HTTP_MAX_RETRIES=10
+ NUMBA_CUDA_USE_NVIDIA_BINDING=1 HYDRA_FULL_ERROR=1 python ./speech_to_text_finetune.py \
+   --config-path="." \
+   --config-name="speech_to_text_finetune" \
+   trainer.accumulate_grad_batches=16 \
+   trainer.devices=1 \
+   trainer.accelerator=gpu \
+-  trainer.precision=16-mixed \
+   +trainer.limit_train_batches=null \
+   exp_manager.create_wandb_logger=True \
+   exp_manager.wandb_logger_kwargs.name=parakeet_v3_finetune_fixed \
+diff --git a/speech_to_text_finetune.yaml b/speech_to_text_finetune.yaml
+index 7c5caeb..85e2791 100644
+--- a/speech_to_text_finetune.yaml
++++ b/speech_to_text_finetune.yaml
+@@ -4,14 +4,15 @@ init_from_pretrained_model: nvidia/parakeet-tdt-0.6b-v3
+ 
+ model:
+   sample_rate: 16000
+-
++  activation_checkpointing: true
+   train_ds:
+     shar_path: hf://buckets/Tyl3rDrden/IvritKnessetRecordingsData
+     use_lhotse: true
+     is_tarred: true
+-    truncate_duration: 30.01
+     batch_size: 1
++    allow_missing_data: true
+     shuffle: false
++    max_duration: 30.1
+     num_workers: 8
+     pin_memory: true
+ 
+@@ -73,7 +74,7 @@ trainer:
+     gradient_as_bucket_view: true
+   accumulate_grad_batches: 16
+   gradient_clip_val: 0.0
+-  precision: bf16
++  precision: transformer-engine
+   log_every_n_steps: 10
+   enable_progress_bar: True
+   num_sanity_val_steps: 0

@@ -1,0 +1,51 @@
+{
+  "os": "Linux-6.17.0-19-generic-x86_64-with-glibc2.42",
+  "python": "CPython 3.10.20",
+  "startedAt": "2026-04-04T10:21:48.181193Z",
+  "args": [
+    "--config-path=.",
+    "--config-name=speech_to_text_finetune",
+    "trainer.accumulate_grad_batches=16",
+    "trainer.devices=1",
+    "trainer.accelerator=gpu",
+    "+trainer.limit_train_batches=null",
+    "exp_manager.create_wandb_logger=True",
+    "exp_manager.wandb_logger_kwargs.name=parakeet_v3_finetune_fixed",
+    "exp_manager.wandb_logger_kwargs.project=parakeet-hebrew-asr"
+  ],
+  "program": "/home/bsoft/callAi/trainParakeet/./speech_to_text_finetune.py",
+  "codePath": "speech_to_text_finetune.py",
+  "codePathLocal": "speech_to_text_finetune.py",
+  "git": {
+    "remote": "https://github.com/Tyl3rDrden/trainParakeetScript.git",
+    "commit": "62d20ed2796daa2940bf78d6b066ce5ce2a1b672"
+  },
+  "email": "jonathanbd712@gmail.com",
+  "root": "/home/bsoft/callAi/trainParakeet/nemo_experiments",
+  "host": "bsoftdevserver",
+  "executable": "/home/bsoft/miniconda3/envs/canaryFineTune/bin/python",
+  "cpu_count": 24,
+  "cpu_count_logical": 32,
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "979639799808",
+      "used": "493732950016"
+    }
+  },
+  "memory": {
+    "total": "65773281280"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce RTX 4090",
+      "memoryTotal": "25757220864",
+      "cudaCores": 16384,
+      "architecture": "Ada",
+      "uuid": "GPU-373b919a-23cc-360f-f858-ff1808dcfaed"
+    }
+  ],
+  "cudaVersion": "13.0",
+  "writerId": "gtshrahnnrfgkltlvqsev4goin5d1kvc"
+}

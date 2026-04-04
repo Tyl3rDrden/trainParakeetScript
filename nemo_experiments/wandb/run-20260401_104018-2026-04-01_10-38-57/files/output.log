@@ -1,0 +1,44 @@
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+[NeMo I 2026-04-01 10:40:19 modelPT:912] Optimizer config = AdamW (
+    Parameter Group 0
+        amsgrad: False
+        betas: [0.9, 0.98]
+        capturable: False
+        differentiable: False
+        eps: 1e-08
+        foreach: None
+        fused: None
+        lr: 0.0001
+        maximize: False
+        weight_decay: 0.001
+    )
+[NeMo I 2026-04-01 10:40:19 modelPT:834] Scheduler "<nemo.core.optim.lr_scheduler.CosineAnnealing object at 0x7b3711f0f160>"
+    will be used during training (effective maximum steps = 1000000) -
+    Parameters :
+    (warmup_steps: 5000
+    warmup_ratio: null
+    min_lr: 5.0e-06
+    max_steps: 1000000
+    )
+
+  | Name              | Type                              | Params | Mode
+--------------------------------------------------------------------------------
+0 | preprocessor      | AudioToMelSpectrogramPreprocessor | 0      | train
+1 | encoder           | ConformerEncoder                  | 608 M  | train
+2 | spec_augmentation | SpectrogramAugmentation           | 0      | train
+3 | wer               | WER                               | 0      | train
+4 | joint             | RNNTJoint                         | 22.1 M | train
+5 | decoder           | RNNTDecoder                       | 27.5 M | train
+6 | loss              | RNNTLoss                          | 0      | train
+7 | spec_augment      | SpectrogramAugmentation           | 0      | train
+--------------------------------------------------------------------------------
+658 M     Trainable params
+0         Non-trainable params
+658 M     Total params
+2,633.960 Total estimated model params size (MB)
+708       Modules in train mode
+0         Modules in eval mode
+[34m[1mwandb[0m: [33mWARNING[0m Serializing object of type list that is 277336 bytes
+Epoch 0:   0%|                                                                                                                                                                                                                                                                       | 0/1000000 [00:00<?, ?it/s][NeMo I 2026-04-01 10:40:21 asr_model:209] CUDA graphs disabled for EncDecRNNTBPEModel::RNNTBPEDecoding::GreedyBatchedTDTInfer
+
+Detected KeyboardInterrupt, attempting graceful shutdown ...

@@ -1,0 +1,94 @@
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Error executing job with overrides: ['trainer.accumulate_grad_batches=16', 'trainer.devices=1', 'trainer.accelerator=gpu', '+trainer.limit_train_batches=null', 'exp_manager.create_wandb_logger=True', 'exp_manager.wandb_logger_kwargs.name=parakeet_v3_finetune_fixed', 'exp_manager.wandb_logger_kwargs.project=parakeet-hebrew-asr']
+Traceback (most recent call last):
+  File "/home/bsoft/callAi/trainParakeet/./speech_to_text_finetune.py", line 227, in <module>
+    main()  # noqa pylint: disable=no-value-for-parameter
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/nemo/core/config/hydra_runner.py", line 129, in wrapper
+    _run_hydra(
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+    run_and_report(
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+    lambda: hydra.run(
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/hydra.py", line 132, in run
+    _ = ret.return_value
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/core/utils.py", line 186, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "/home/bsoft/callAi/trainParakeet/./speech_to_text_finetune.py", line 223, in main
+    trainer.fit(asr_model)
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 538, in fit
+    call._call_and_handle_interrupt(
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/trainer/call.py", line 46, in _call_and_handle_interrupt
+    return trainer.strategy.launcher.launch(trainer_fn, *args, trainer=trainer, **kwargs)
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/strategies/launchers/subprocess_script.py", line 105, in launch
+    return function(*args, **kwargs)
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 574, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 957, in _run
+    self.strategy.setup(self)
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/strategies/ddp.py", line 166, in setup
+    self.precision_plugin.convert_module(self.model)
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/fabric/plugins/precision/transformer_engine.py", line 104, in convert_module
+    _convert_layers(module)
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/fabric/plugins/precision/transformer_engine.py", line 151, in _convert_layers
+    import transformer_engine.pytorch as te
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/transformer_engine/pytorch/__init__.py", line 18, in <module>
+    load_framework_extension("torch")
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/transformer_engine/common/__init__.py", line 189, in load_framework_extension
+    spec = importlib.util.spec_from_file_location(module_name, _get_shared_object_file(framework))
+  File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/transformer_engine/common/__init__.py", line 128, in _get_shared_object_file
+    raise FileNotFoundError(
+FileNotFoundError: Could not find shared object file for Transformer Engine torch lib.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/bsoft/callAi/trainParakeet/./speech_to_text_finetune.py", line 227, in <module>
+[rank0]:     main()  # noqa pylint: disable=no-value-for-parameter
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/nemo/core/config/hydra_runner.py", line 129, in wrapper
+[rank0]:     _run_hydra(
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+[rank0]:     _run_app(
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+[rank0]:     run_and_report(
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+[rank0]:     raise ex
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+[rank0]:     return func()
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+[rank0]:     lambda: hydra.run(
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/_internal/hydra.py", line 132, in run
+[rank0]:     _ = ret.return_value
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/core/utils.py", line 260, in return_value
+[rank0]:     raise self._return_value
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/hydra/core/utils.py", line 186, in run_job
+[rank0]:     ret.return_value = task_function(task_cfg)
+[rank0]:   File "/home/bsoft/callAi/trainParakeet/./speech_to_text_finetune.py", line 223, in main
+[rank0]:     trainer.fit(asr_model)
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 538, in fit
+[rank0]:     call._call_and_handle_interrupt(
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/trainer/call.py", line 46, in _call_and_handle_interrupt
+[rank0]:     return trainer.strategy.launcher.launch(trainer_fn, *args, trainer=trainer, **kwargs)
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/strategies/launchers/subprocess_script.py", line 105, in launch
+[rank0]:     return function(*args, **kwargs)
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 574, in _fit_impl
+[rank0]:     self._run(model, ckpt_path=ckpt_path)
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 957, in _run
+[rank0]:     self.strategy.setup(self)
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/pytorch/strategies/ddp.py", line 166, in setup
+[rank0]:     self.precision_plugin.convert_module(self.model)
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/fabric/plugins/precision/transformer_engine.py", line 104, in convert_module
+[rank0]:     _convert_layers(module)
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/lightning/fabric/plugins/precision/transformer_engine.py", line 151, in _convert_layers
+[rank0]:     import transformer_engine.pytorch as te
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/transformer_engine/pytorch/__init__.py", line 18, in <module>
+[rank0]:     load_framework_extension("torch")
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/transformer_engine/common/__init__.py", line 189, in load_framework_extension
+[rank0]:     spec = importlib.util.spec_from_file_location(module_name, _get_shared_object_file(framework))
+[rank0]:   File "/home/bsoft/miniconda3/envs/canaryFineTune/lib/python3.10/site-packages/transformer_engine/common/__init__.py", line 128, in _get_shared_object_file
+[rank0]:     raise FileNotFoundError(
+[rank0]: FileNotFoundError: Could not find shared object file for Transformer Engine torch lib.

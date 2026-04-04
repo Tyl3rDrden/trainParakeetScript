@@ -1,0 +1,1 @@
+{"training_batch_wer":2.0512821674346924,"global_step":29,"train_backward_timing in s":0.03965568542480469,"_wandb":{"runtime":79},"trainer/global_step":29,"train_loss":4027.99169921875,"train_step_timing in s":0.14116740226745605,"_runtime":79,"_timestamp":1.775301025074256e+09,"_step":2,"epoch":0,"learning_rate":5.99880024765298e-07}

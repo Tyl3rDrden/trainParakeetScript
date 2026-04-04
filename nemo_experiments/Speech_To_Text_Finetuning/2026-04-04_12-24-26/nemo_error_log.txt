@@ -1,0 +1,49 @@
+[NeMo W 2026-04-04 12:24:26 nemo_logging:364] /opt/venv/lib/python3.12/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2026-04-04 12:24:26 exp_manager:1413] The checkpoint callback was told to monitor a validation value and trainer's max_steps was set to 1000000. Please ensure that max_steps will run for at least None epochs to ensure that checkpointing will not error out.
+[NeMo W 2026-04-04 12:25:30 modelPT:188] If you intend to do training or fine-tuning, please call the ModelPT.setup_training_data() method and provide a valid configuration file to setup the train data loader.
+    Train config : 
+    use_lhotse: true
+    skip_missing_manifest_entries: true
+    input_cfg: null
+    tarred_audio_filepaths: null
+    manifest_filepath: null
+    sample_rate: 16000
+    shuffle: true
+    num_workers: 2
+    pin_memory: true
+    max_duration: 10.0
+    min_duration: 1.0
+    text_field: answer
+    batch_duration: null
+    max_tps: null
+    use_bucketing: true
+    bucket_duration_bins: null
+    bucket_batch_size: null
+    num_buckets: 30
+    bucket_buffer_size: 20000
+    shuffle_buffer_size: 10000
+    
+[NeMo W 2026-04-04 12:25:30 modelPT:195] If you intend to do validation, please call the ModelPT.setup_validation_data() or ModelPT.setup_multiple_validation_data() method and provide a valid configuration file to setup the validation data loader(s). 
+    Validation config : 
+    use_lhotse: true
+    manifest_filepath: null
+    sample_rate: 16000
+    batch_size: 16
+    shuffle: false
+    max_duration: 40.0
+    min_duration: 0.1
+    num_workers: 2
+    pin_memory: true
+    text_field: answer
+    
+[NeMo W 2026-04-04 12:25:33 modelPT:300] You tried to register an artifact under config key=tokenizer.model_path but an artifact for it has already been registered.
+[NeMo W 2026-04-04 12:25:33 modelPT:300] You tried to register an artifact under config key=tokenizer.vocab_path but an artifact for it has already been registered.
+[NeMo W 2026-04-04 12:25:33 modelPT:300] You tried to register an artifact under config key=tokenizer.spe_tokenizer_vocab but an artifact for it has already been registered.
+[NeMo W 2026-04-04 12:25:38 speech_to_text_finetune:167] The vocabulary size of the new tokenizer differs from that of the loaded model. As a result, finetuning will proceed with the new vocabulary, and the decoder will be reinitialized.
+[NeMo W 2026-04-04 12:25:38 dataloader:826] The following configuration keys are ignored by Lhotse dataloader: is_tarred,allow_missing_data
+[NeMo W 2026-04-04 12:25:40 audio_to_text_dataset:833] Could not load dataset as `manifest_filepath` was None. Provided config : {'manifest_filepath': None, 'sample_rate': 16000, 'batch_size': 16, 'shuffle': False, 'use_start_end_token': False, 'num_workers': 8, 'pin_memory': True}
+[NeMo W 2026-04-04 12:25:46 nemo_logging:364] /opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/fit_loop.py:298: The number of training batches (1) is smaller than the logging interval Trainer(log_every_n_steps=10). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+    
+[NeMo W 2026-04-04 12:25:51 audio_preprocessing:85] AudioPreprocessor received an input signal of dtype torch.bfloat16, rather than torch.float32. In sweeps across multiple datasets, we have found that the preprocessor is not robust to low precision  mathematics. As such, it runs in float32. Your input will be cast to float32, but this is not necessarily enough to recovery full accuracy. For example, simply casting input_signal from torch.float32 to torch.bfloat16, then back to torch.float32 before running AudioPreprocessor causes drops in absolute WER of up to 0.1%. torch.bfloat16 simply does not have enough mantissa bits to represent enough values in the range [-1.0,+1.0] correctly.

@@ -1,0 +1,4 @@
+[NeMo W 2026-04-04 12:27:59 nemo_logging:364] /opt/venv/lib/python3.12/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2026-04-04 12:28:00 exp_manager:1413] The checkpoint callback was told to monitor a validation value and trainer's max_steps was set to 1000000. Please ensure that max_steps will run for at least None epochs to ensure that checkpointing will not error out.

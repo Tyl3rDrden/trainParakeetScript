@@ -1,0 +1,445 @@
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+[NeMo I 2026-04-04 12:25:44 modelPT:830] Optimizer config = AdamW (
+    Parameter Group 0
+        amsgrad: False
+        betas: [0.9, 0.98]
+        capturable: False
+        decoupled_weight_decay: True
+        differentiable: False
+        eps: 1e-08
+        foreach: None
+        fused: None
+        lr: 0.0001
+        maximize: False
+        weight_decay: 0.001
+    )
+[NeMo I 2026-04-04 12:25:44 lr_scheduler:995] Scheduler "<nemo.core.optim.lr_scheduler.CosineAnnealing object at 0x75fed0a6be30>"
+    will be used during training (effective maximum steps = 1000000) -
+    Parameters :
+    (warmup_steps: 5000
+    warmup_ratio: null
+    min_lr: 5.0e-06
+    max_steps: 1000000
+    )
+
+  | Name              | Type                              | Params | Mode
+--------------------------------------------------------------------------------
+0 | preprocessor      | AudioToMelSpectrogramPreprocessor | 0      | train
+1 | encoder           | ConformerEncoder                  | 608 M  | train
+2 | spec_augmentation | SpectrogramAugmentation           | 0      | train
+3 | wer               | WER                               | 0      | train
+4 | joint             | RNNTJoint                         | 22.1 M | train
+5 | decoder           | RNNTDecoder                       | 27.5 M | train
+6 | loss              | RNNTLoss                          | 0      | train
+7 | spec_augment      | SpectrogramAugmentation           | 0      | train
+--------------------------------------------------------------------------------
+658 M     Trainable params
+0         Non-trainable params
+658 M     Total params
+2,633.960 Total estimated model params size (MB)
+708       Modules in train mode
+0         Modules in eval mode
+[34m[1mwandb[0m: [33mWARNING[0m Serializing object of type list that is 277336 bytes
+[NeMo W 2026-04-04 12:25:46 nemo_logging:364] /opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/fit_loop.py:298: The number of training batches (1) is smaller than the logging interval Trainer(log_every_n_steps=10). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+
+Epoch 0:   0%|                                                                                                                                | 0/1 [00:00<?, ?it/s][NeMo I 2026-04-04 12:25:46 asr_model:198] CUDA graphs disabled for EncDecRNNTBPEModel::RNNTBPEDecoding::GreedyBatchedTDTInfer
+[NeMo W 2026-04-04 12:25:51 audio_preprocessing:85] AudioPreprocessor received an input signal of dtype torch.bfloat16, rather than torch.float32. In sweeps across multiple datasets, we have found that the preprocessor is not robust to low precision  mathematics. As such, it runs in float32. Your input will be cast to float32, but this is not necessarily enough to recovery full accuracy. For example, simply casting input_signal from torch.float32 to torch.bfloat16, then back to torch.float32 before running AudioPreprocessor causes drops in absolute WER of up to 0.1%. torch.bfloat16 simply does not have enough mantissa bits to represent enough values in the range [-1.0,+1.0] correctly.
+Error executing job with overrides: ['trainer.accumulate_grad_batches=16', 'trainer.devices=1', 'trainer.accelerator=gpu', '+trainer.limit_train_batches=null', 'exp_manager.create_wandb_logger=True', 'exp_manager.wandb_logger_kwargs.name=parakeet_v3_finetune_fixed', 'exp_manager.wandb_logger_kwargs.project=parakeet-hebrew-asr']
+Traceback (most recent call last):
+  File "/workspace/./speech_to_text_finetune.py", line 227, in <module>
+    main()  # noqa pylint: disable=no-value-for-parameter
+    ^^^^^^
+  File "/opt/NeMo/nemo/core/config/hydra_runner.py", line 129, in wrapper
+    _run_hydra(
+  File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+    run_and_report(
+  File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+           ^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+    lambda: hydra.run(
+            ^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/hydra.py", line 132, in run
+    _ = ret.return_value
+        ^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+  File "/opt/venv/lib/python3.12/site-packages/hydra/core/utils.py", line 186, in run_job
+    ret.return_value = task_function(task_cfg)
+                       ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/./speech_to_text_finetune.py", line 223, in main
+    trainer.fit(asr_model)
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/trainer.py", line 538, in fit
+    call._call_and_handle_interrupt(
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/call.py", line 46, in _call_and_handle_interrupt
+    return trainer.strategy.launcher.launch(trainer_fn, *args, trainer=trainer, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/launchers/subprocess_script.py", line 105, in launch
+    return function(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/trainer.py", line 574, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/trainer.py", line 981, in _run
+    results = self._run_stage()
+              ^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/trainer.py", line 1025, in _run_stage
+    self.fit_loop.run()
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/fit_loop.py", line 205, in run
+    self.advance()
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/fit_loop.py", line 363, in advance
+    self.epoch_loop.run(self._data_fetcher)
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/training_epoch_loop.py", line 140, in run
+    self.advance(data_fetcher)
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/training_epoch_loop.py", line 250, in advance
+    batch_output = self.automatic_optimization.run(trainer.optimizers[0], batch_idx, kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/optimization/automatic.py", line 190, in run
+    self._optimizer_step(batch_idx, closure)
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/optimization/automatic.py", line 268, in _optimizer_step
+    call._call_lightning_module_hook(
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/call.py", line 167, in _call_lightning_module_hook
+    output = fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/core/module.py", line 1306, in optimizer_step
+    optimizer.step(closure=optimizer_closure)
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/core/optimizer.py", line 153, in step
+    step_output = self._strategy.optimizer_step(self._optimizer, closure, **kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/ddp.py", line 270, in optimizer_step
+    optimizer_output = super().optimizer_step(optimizer, closure, model, **kwargs)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/strategy.py", line 238, in optimizer_step
+    return self.precision_plugin.optimizer_step(optimizer, model=model, closure=closure, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/plugins/precision/precision.py", line 122, in optimizer_step
+    return optimizer.step(closure=closure, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/optim/lr_scheduler.py", line 173, in wrapper
+    return func.__get__(opt, opt.__class__)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/optim/optimizer.py", line 526, in wrapper
+    out = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/optim/optimizer.py", line 83, in _use_grad
+    ret = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/optim/adam.py", line 226, in step
+    loss = closure()
+           ^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/plugins/precision/precision.py", line 108, in _wrap_closure
+    closure_result = closure()
+                     ^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/optimization/automatic.py", line 144, in __call__
+    self._result = self.closure(*args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/_contextlib.py", line 121, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/optimization/automatic.py", line 129, in closure
+    step_output = self._step_fn()
+                  ^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/optimization/automatic.py", line 317, in _training_step
+    training_step_output = call._call_strategy_hook(trainer, "training_step", *kwargs.values())
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/call.py", line 319, in _call_strategy_hook
+    output = fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/strategy.py", line 389, in training_step
+    return self._forward_redirection(self.model, self.lightning_module, "training_step", *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/strategy.py", line 640, in __call__
+    wrapper_output = wrapper_module(*args, **kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/parallel/distributed.py", line 1662, in forward
+    else self._run_ddp_forward(*inputs, **kwargs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/parallel/distributed.py", line 1488, in _run_ddp_forward
+    return self.module(*inputs, **kwargs)  # type: ignore[index]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/strategy.py", line 633, in wrapped_forward
+    out = method(*_args, **_kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/NeMo/nemo/utils/model_utils.py", line 463, in wrap_training_step
+    output_dict = wrapped(*args, **kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/NeMo/nemo/collections/asr/models/rnnt_models.py", line 722, in training_step
+    encoded, encoded_len = self.forward(input_signal=signal, input_signal_length=signal_len)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/NeMo/nemo/core/classes/common.py", line 1198, in wrapped_call
+    outputs = wrapped(*args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/NeMo/nemo/collections/asr/models/rnnt_models.py", line 707, in forward
+    encoded, encoded_len = self.encoder(audio_signal=processed_signal, length=processed_signal_length)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/NeMo/nemo/core/classes/common.py", line 1198, in wrapped_call
+    outputs = wrapped(*args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/NeMo/nemo/collections/asr/modules/conformer_encoder.py", line 584, in forward
+    return self.forward_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/NeMo/nemo/collections/asr/modules/conformer_encoder.py", line 683, in forward_internal
+    audio_signal = layer(
+                   ^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/NeMo/nemo/collections/asr/parts/submodules/conformer_modules.py", line 181, in forward
+    x = self.self_attn(query=x, key=x, value=x, mask=att_mask, pos_emb=pos_emb, cache=cache_last_channel)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/NeMo/nemo/collections/asr/parts/submodules/multi_head_attention.py", line 298, in forward
+    p = self.linear_pos(pos_emb).view(n_batch_pos, -1, self.h, self.d_k)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/transformer_engine/pytorch/jit.py", line 67, in wrapper
+    return disabled_f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/_dynamo/eval_frame.py", line 1098, in _fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/transformer_engine/pytorch/module/linear.py", line 1462, in forward
+    out = linear_fn(
+          ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/autograd/function.py", line 582, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/transformer_engine/pytorch/module/linear.py", line 177, in forward
+    assert_dim_for_fp8_exec(inputmat, weight)
+  File "/opt/venv/lib/python3.12/site-packages/transformer_engine/pytorch/utils.py", line 443, in assert_dim_for_fp8_exec
+    assert math.prod(tensor.shape[:-1]) % 8 == 0 and tensor.shape[-1] % 16 == 0, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: FP8 execution requires the product of all dimensions except the last to be divisible by 8 and the last dimension to be divisible by 16, but got tensor with dims=[1, 751, 1024]
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/workspace/./speech_to_text_finetune.py", line 227, in <module>
+[rank0]:     main()  # noqa pylint: disable=no-value-for-parameter
+[rank0]:     ^^^^^^
+[rank0]:   File "/opt/NeMo/nemo/core/config/hydra_runner.py", line 129, in wrapper
+[rank0]:     _run_hydra(
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+[rank0]:     _run_app(
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+[rank0]:     run_and_report(
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+[rank0]:     raise ex
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+[rank0]:     return func()
+[rank0]:            ^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+[rank0]:     lambda: hydra.run(
+[rank0]:             ^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/hydra/_internal/hydra.py", line 132, in run
+[rank0]:     _ = ret.return_value
+[rank0]:         ^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/hydra/core/utils.py", line 260, in return_value
+[rank0]:     raise self._return_value
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/hydra/core/utils.py", line 186, in run_job
+[rank0]:     ret.return_value = task_function(task_cfg)
+[rank0]:                        ^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/workspace/./speech_to_text_finetune.py", line 223, in main
+[rank0]:     trainer.fit(asr_model)
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/trainer.py", line 538, in fit
+[rank0]:     call._call_and_handle_interrupt(
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/call.py", line 46, in _call_and_handle_interrupt
+[rank0]:     return trainer.strategy.launcher.launch(trainer_fn, *args, trainer=trainer, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/launchers/subprocess_script.py", line 105, in launch
+[rank0]:     return function(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/trainer.py", line 574, in _fit_impl
+[rank0]:     self._run(model, ckpt_path=ckpt_path)
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/trainer.py", line 981, in _run
+[rank0]:     results = self._run_stage()
+[rank0]:               ^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/trainer.py", line 1025, in _run_stage
+[rank0]:     self.fit_loop.run()
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/fit_loop.py", line 205, in run
+[rank0]:     self.advance()
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/fit_loop.py", line 363, in advance
+[rank0]:     self.epoch_loop.run(self._data_fetcher)
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/training_epoch_loop.py", line 140, in run
+[rank0]:     self.advance(data_fetcher)
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/training_epoch_loop.py", line 250, in advance
+[rank0]:     batch_output = self.automatic_optimization.run(trainer.optimizers[0], batch_idx, kwargs)
+[rank0]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/optimization/automatic.py", line 190, in run
+[rank0]:     self._optimizer_step(batch_idx, closure)
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/optimization/automatic.py", line 268, in _optimizer_step
+[rank0]:     call._call_lightning_module_hook(
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/call.py", line 167, in _call_lightning_module_hook
+[rank0]:     output = fn(*args, **kwargs)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/core/module.py", line 1306, in optimizer_step
+[rank0]:     optimizer.step(closure=optimizer_closure)
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/core/optimizer.py", line 153, in step
+[rank0]:     step_output = self._strategy.optimizer_step(self._optimizer, closure, **kwargs)
+[rank0]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/ddp.py", line 270, in optimizer_step
+[rank0]:     optimizer_output = super().optimizer_step(optimizer, closure, model, **kwargs)
+[rank0]:                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/strategy.py", line 238, in optimizer_step
+[rank0]:     return self.precision_plugin.optimizer_step(optimizer, model=model, closure=closure, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/plugins/precision/precision.py", line 122, in optimizer_step
+[rank0]:     return optimizer.step(closure=closure, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/optim/lr_scheduler.py", line 173, in wrapper
+[rank0]:     return func.__get__(opt, opt.__class__)(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/optim/optimizer.py", line 526, in wrapper
+[rank0]:     out = func(*args, **kwargs)
+[rank0]:           ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/optim/optimizer.py", line 83, in _use_grad
+[rank0]:     ret = func(*args, **kwargs)
+[rank0]:           ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/optim/adam.py", line 226, in step
+[rank0]:     loss = closure()
+[rank0]:            ^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/plugins/precision/precision.py", line 108, in _wrap_closure
+[rank0]:     closure_result = closure()
+[rank0]:                      ^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/optimization/automatic.py", line 144, in __call__
+[rank0]:     self._result = self.closure(*args, **kwargs)
+[rank0]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/utils/_contextlib.py", line 121, in decorate_context
+[rank0]:     return func(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/optimization/automatic.py", line 129, in closure
+[rank0]:     step_output = self._step_fn()
+[rank0]:                   ^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/loops/optimization/automatic.py", line 317, in _training_step
+[rank0]:     training_step_output = call._call_strategy_hook(trainer, "training_step", *kwargs.values())
+[rank0]:                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/trainer/call.py", line 319, in _call_strategy_hook
+[rank0]:     output = fn(*args, **kwargs)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/strategy.py", line 389, in training_step
+[rank0]:     return self._forward_redirection(self.model, self.lightning_module, "training_step", *args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/strategy.py", line 640, in __call__
+[rank0]:     wrapper_output = wrapper_module(*args, **kwargs)
+[rank0]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/parallel/distributed.py", line 1662, in forward
+[rank0]:     else self._run_ddp_forward(*inputs, **kwargs)
+[rank0]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/parallel/distributed.py", line 1488, in _run_ddp_forward
+[rank0]:     return self.module(*inputs, **kwargs)  # type: ignore[index]
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/lightning/pytorch/strategies/strategy.py", line 633, in wrapped_forward
+[rank0]:     out = method(*_args, **_kwargs)
+[rank0]:           ^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/NeMo/nemo/utils/model_utils.py", line 463, in wrap_training_step
+[rank0]:     output_dict = wrapped(*args, **kwargs)
+[rank0]:                   ^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/NeMo/nemo/collections/asr/models/rnnt_models.py", line 722, in training_step
+[rank0]:     encoded, encoded_len = self.forward(input_signal=signal, input_signal_length=signal_len)
+[rank0]:                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/NeMo/nemo/core/classes/common.py", line 1198, in wrapped_call
+[rank0]:     outputs = wrapped(*args, **kwargs)
+[rank0]:               ^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/NeMo/nemo/collections/asr/models/rnnt_models.py", line 707, in forward
+[rank0]:     encoded, encoded_len = self.encoder(audio_signal=processed_signal, length=processed_signal_length)
+[rank0]:                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/NeMo/nemo/core/classes/common.py", line 1198, in wrapped_call
+[rank0]:     outputs = wrapped(*args, **kwargs)
+[rank0]:               ^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/NeMo/nemo/collections/asr/modules/conformer_encoder.py", line 584, in forward
+[rank0]:     return self.forward_internal(
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/NeMo/nemo/collections/asr/modules/conformer_encoder.py", line 683, in forward_internal
+[rank0]:     audio_signal = layer(
+[rank0]:                    ^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/NeMo/nemo/collections/asr/parts/submodules/conformer_modules.py", line 181, in forward
+[rank0]:     x = self.self_attn(query=x, key=x, value=x, mask=att_mask, pos_emb=pos_emb, cache=cache_last_channel)
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/NeMo/nemo/collections/asr/parts/submodules/multi_head_attention.py", line 298, in forward
+[rank0]:     p = self.linear_pos(pos_emb).view(n_batch_pos, -1, self.h, self.d_k)
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1777, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1788, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/transformer_engine/pytorch/jit.py", line 67, in wrapper
+[rank0]:     return disabled_f(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/_dynamo/eval_frame.py", line 1098, in _fn
+[rank0]:     return fn(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/transformer_engine/pytorch/module/linear.py", line 1462, in forward
+[rank0]:     out = linear_fn(
+[rank0]:           ^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.12/dist-packages/torch/autograd/function.py", line 582, in apply
+[rank0]:     return super().apply(*args, **kwargs)  # type: ignore[misc]
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/transformer_engine/pytorch/module/linear.py", line 177, in forward
+[rank0]:     assert_dim_for_fp8_exec(inputmat, weight)
+[rank0]:   File "/opt/venv/lib/python3.12/site-packages/transformer_engine/pytorch/utils.py", line 443, in assert_dim_for_fp8_exec
+[rank0]:     assert math.prod(tensor.shape[:-1]) % 8 == 0 and tensor.shape[-1] % 16 == 0, (
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: AssertionError: FP8 execution requires the product of all dimensions except the last to be divisible by 8 and the last dimension to be divisible by 16, but got tensor with dims=[1, 751, 1024]
