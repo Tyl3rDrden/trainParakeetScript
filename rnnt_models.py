@@ -585,7 +585,7 @@ class EncDecRNNTModel(ASRModel, ASRModuleMixin, ExportableEncDecModel, ASRTransc
             # We also need to check if limit_train_batches is already set.
             # If it's an int, we assume that the user has set it to something sane, i.e. <= # training batches,
             # and don't change it. Otherwise, adjust batches accordingly if it's a float (including 1.0)
-            self._trainer.limit_train_batches=1000000000000
+            self._trainer.limit_train_batches=(5000*16) # i want 5000 global steps with a batch size of 32 with 16 accumulation steps, which means 5000 global steps  
 
     def setup_validation_data(self, val_data_config: Optional[Union[DictConfig, Dict]]):
         """

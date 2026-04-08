@@ -1,2 +1,0 @@
-[NeMo W 2026-04-04 10:19:28 <frozen importlib:241] Megatron num_microbatches_calculator not found, using Apex version.
-[NeMo W 2026-04-04 10:19:29 exp_manager:736] The checkpoint callback was told to monitor a validation value and trainer's max_steps was set to 1000000. Please ensure that max_steps will run for at least None epochs to ensure that checkpointing will not error out.

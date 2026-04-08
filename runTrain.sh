@@ -1,6 +1,8 @@
 #!/bin/bash
 export LHOTSE_PREFETCH_SIZE=32
 export FSSPEC_HTTP_MAX_RETRIES=10
+export TORCH_LOAD_WEIGHTS_ONLY=0
+export TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1
 NUMBA_CUDA_USE_NVIDIA_BINDING=1 HYDRA_FULL_ERROR=1 python ./speech_to_text_finetune.py \
   --config-path="." \
   --config-name="speech_to_text_finetune" \
